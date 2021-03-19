@@ -1,3 +1,6 @@
+#pandas is a fast, powerful, flexible and easy to use open source data analysis and manipulation tool,
+#built on top of the Python programming language
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -12,21 +15,21 @@ df.describe()
 
 #Performing operations on Rows and Columns
 # Selecting column
-df[['Name']]
+df2=df[['Age']]
 
 #Selecting a Row
-row = df.loc[1]
+row = df.loc[1, "Age"]
 row
 
 #Selecting a single cell using numerical indexes - iloc
 onevalue = df.iloc[1,1]
-row
+onevalue
 df.iloc[0:3, :]
 
 
 #Data Selection, addition, deletion
-#adding a row and calculate values
-df['Age2']=df['Age']/2.0
+#adding a column and calculate values
+df['Age2']=df['Age']-18
 
 #iterating through rows
 #add a new columns
@@ -45,6 +48,7 @@ names_of_adults=df[df["isadult"] ==1]["Name"].tolist()
 names_of_adults=df[df["isadult"] ==1]["Name"].unique().tolist()
 #select rows having an attribute in the list
 df[df.Name.isin(['Ashika', 'Tanu'])]
+df[df["Name"].isin(['Ashika', 'Tanu'])]
 #same, but opposite filter
 df[~df.Name.isin(['Ashika', 'Tanu'])]
 
@@ -75,9 +79,8 @@ df[["Age"]].max()
 df[["Age"]].median()
 
 df.groupby(["isadult"])["Age"].mean()
-# 3. More than one aggregation
+#More than one aggregation
 df.groupby(["isadult"]).agg({'Age':['sum', 'max'],'Age2':'mean'})
-
 
 #data cleaning
 #check for null values
@@ -101,6 +104,11 @@ df["E"]=df["D"]*1000
 #write a csv file
 df.to_csv("C:/DATA/outfile.csv", index=False)
 
+#
+import joblib
+joblib.dump(df,"C:/DATA/df.sav")
+df=joblib.load("C:/DATA/df.sav")
+
 
 #read an excel file
 import xlrd
@@ -118,7 +126,6 @@ db_connection_url = "postgres://username:mypassword@localhost:5432/pythonspatial
 engine = create_engine(db_connection_url)
 sqlstatement='SELECT "bestand_id", "BAUMART_ID", "GDICKnum" FROM public."BK_BAUMART"'
 bk_df=pd.read_sql_query(sqlstatement,con=engine)
-
 
 #time series
 from datetime import datetime
